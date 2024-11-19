@@ -2,7 +2,7 @@ package model;
 
 public class Product {
     private int id;
-    private String name; // 바지
+    private String name;
 
     public Product(int id, String name) {
         this.id = id;

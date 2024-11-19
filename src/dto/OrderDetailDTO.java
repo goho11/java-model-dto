@@ -1,28 +1,73 @@
 package dto;
 
+import lombok.Data;
 import model.OrderOption;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+@Data
 public class OrderDetailDTO {
+
     private int orderId;
-    private List<ProductDTO> products =new ArrayList<>();
+    private List<OrderProductDTO> products = new ArrayList<>();
     private int sumPrice;
 
-    publc OrderDetailDTO(List<OrderOption> products) {
-        this.orderId = orderId;
-        this.products = products;
-        this.sumPrice = sumPrice;
+    public OrderDetailDTO(List<OrderOption> options) {
+        // 1. orderId
+        this.orderId = options.get(0).getOrder().getId();
+
+        // 2. sumPrice
+        for (OrderOption option : options) {
+            this.sumPrice += option.getTotalPrice();
+        }
+
+        // 3. products
+        // 3-1. 주문옵션들 productId [1,1,2] -> [1,2] 돈봉투 2개 만들기
+        Set<Integer> ids = new HashSet<>(); // [1,2] 넣기
+        for (OrderOption option : options) {
+            ids.add(option.getProduct().getId());
+        }
+
+        // 3-2. 중복 상품 크기만큼 반복하면서 주문 옵션 추가하기
+        for (Integer id : ids) {
+            List<OrderOption> temp = new ArrayList<>();
+
+            for (OrderOption option : options) {
+                if (id == option.getProduct().getId()) temp.add(option);
+            }
+
+            OrderProductDTO product = new OrderProductDTO(temp);
+            products.add(product);
+        }
+
     }
 
-    class ProductDTO {
+    @Data
+    class OrderProductDTO { // 돈봉투
         private int productId;
-        private List<OrderOptionDTO> orderOptions = new ArrayList<>();
+        private List<OrderOptionDTO> options = new ArrayList<OrderOptionDTO>();
 
-            public dto.ProductDTO(List<OrderOption> orderOptions) {
-                this.orderOptions = orderOptions;
-                this.productId = productId;
+        public OrderProductDTO(List<OrderOption> options) {
+            this.productId = options.get(0).getProduct().getId();
+
+            for (OrderOption option : options) {
+                this.options.add(new OrderOptionDTO(option));
+           }
+        }
+
+        @Data
+        class OrderOptionDTO {
+            private int id;
+            private String optionName;
+            private int qty;
+            private int totalPrice;
+
+            public OrderOptionDTO(OrderOption option) {
+                this.id = option.getId();
+                this.optionName = option.getOptionName();
+                this.qty = option.getQty();
+                this.totalPrice = option.getTotalPrice();
+            }
         }
     }
 }
