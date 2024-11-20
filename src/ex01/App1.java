@@ -1,13 +1,13 @@
+package ex01;
+
 import com.google.gson.Gson;
-import dto.OrderDetailDTO;
-import dto.ProductDTO;
-import dto.ProductDetailDTO;
-import lombok.Getter;
-import lombok.Setter;
-import model.Order;
-import model.OrderOption;
-import model.ProductOption;
-import model.Product;
+import ex01.dto.OrderDetailDTO;
+import ex01.dto.ProductDTO;
+import ex01.dto.ProductDetailDTO;
+import ex01.model.Order;
+import ex01.model.OrderOption;
+import ex01.model.Product;
+import ex01.model.ProductOption;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,20 +46,19 @@ public class App1 {
         Gson gson = new Gson();
 
         // 4. 상품 목록 화면 (products) -> List<ProductDTO>
+        // 상품 전부를 담기 위한 list 생성 후, 담기
         List<Product> products = Arrays.asList(p1, p2); // 1번 문제 -> products DTO로 옮기기
 
         // 알고리즘
         // 4-1. product -> new ProductDTO(product);
-        List<ProductDTO> productDTOs = new ArrayList<>();
+        List<ProductDTO> productDTOs = new ArrayList<>(); // 입력값이 list면 출력값도 list
 
+        // for문을 이용해 전체 출력
+        // Product product:for문 안에 선언된 임시 변수
         for (Product product : products) {
+            // Product 객체는 ProductDTO로 변환하여 담아야 해서 ProductDTO(product) 새로 생성후 담기
             productDTOs.add(new ProductDTO(product));
         }
-        // 해당 코드 for문 줄이기
-//        ProductDTO pDTO1 = new ProductDTO(products.get(0));
-//        ProductDTO pDTO2 = new ProductDTO(products.get(1));
-//        productDTOs.add(pDTO1);
-//        productDTOs.add(pDTO2);
 
         String r1 = gson.toJson(productDTOs); // json 전송 확인
         System.out.println(r1);

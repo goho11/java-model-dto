@@ -1,8 +1,8 @@
-package dto;
+package ex01.dto;
 
 import lombok.Data;
-import model.Product;
-import model.ProductOption;
+import ex01.model.Product;
+import ex01.model.ProductOption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,13 @@ public class ProductDetailDTO {
     private int productId;
     private String productName;
 
+    // ProductDetailDTO의 범위 내에서만 사용되는 클래스
+    // 다른 클래스에서 직접 사용할 필요가 없다
     private List<ProductOptionDTO> options = new ArrayList<>();
 
     public ProductDetailDTO(List<ProductOption> options) {
+        // 첫번째 옵션의 상품 ID와 이름 출력
+        // 모든 옵션의 Product 정보를 가져오려면 역시 반복문 필요
         this.productId = options.get(0).getProduct().getId();
         this.productName = options.get(0).getProduct().getName();
 

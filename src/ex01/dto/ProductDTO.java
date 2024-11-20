@@ -1,7 +1,7 @@
-package dto;
+package ex01.dto;
 
 import lombok.Data;
-import model.Product;
+import ex01.model.Product;
 
 @Data // get, set
 public class ProductDTO {
