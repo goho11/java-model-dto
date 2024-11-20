@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CountApp {
     public static void main(String[] args) {
-        // 1. count
+        // count
         List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
 
         // 뿌리고 중간 정산하고 다시 수집
@@ -13,7 +13,8 @@ public class CountApp {
         List<String> r1 = names.stream()
                 .filter(name -> name.length() > 3)
                 .toList();
-        r1.forEach(s -> System.out.println(s)); // 람다 컨슈머
+
+        r1.forEach(s -> System.out.println(s)); // 람다 consumer
 
         // count라서 리턴타입 long
         long r2 = names.stream()

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MapApp {
     public static void main(String[] args) {
-        // 1. map (가공) -펑셔널. 받아서 돌려줌
+        // map (가공) -Function. 받아서 돌려줌
         List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
 
         // List 글자 소문자 변환

@@ -1,63 +1,59 @@
 package ex01.dto;
 
-import ex01.model.OrderOption;
 import lombok.Data;
+import model.OrderOption;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class OrderDetailV2DTO {
-
     private int orderId;
-    private List<OrderProductDTO> products = new ArrayList<>();
+    private List<ProductDTO> products;
     private int sumPrice;
 
     public OrderDetailV2DTO(List<OrderOption> options) {
         // 1. orderId
-        this.orderId = options.get(0).getOrder().getId();
-
+        this.orderId = options.get(0).getOrder().getId()
         // 2. sumPrice - 활용
         this.sumPrice = options.stream()
-                                .mapToInt(value -> value.getTotalPrice())
-                                .sum();
+                .mapToInt(value -> value.getTotalPrice())
+                .sum();
 
         // 3. products
         // 3.1 List<OrderOption> options 친구를 물가에 던진다
         // 3.2 product로 그룹핑(같은 객체 or1, or2) (다른 객체 or3) -결과가 Map
         // 3.3 OrderProductDTO를 그룹 개수만큼 생성해서 만들어주기
         // 중간에 사용하기 entrySet() // Map타입을 set타입으로 변경
-
+        this.products = orderOptions.stream()
+                .collect(Collectors.groupingBy(option -> option.getProduct().getId())) // productId로 그룹화
+                .entrySet().stream()
+                .map(entry -> new ProductDTO(entry.getKey(), entry.getValue())) // ProductDTO로 변환
+                .toList();
     }
 
     @Data
-    class OrderProductDTO { // 돈봉투
+    class ProductDTO {
         private int productId;
-        private List<OrderOptionDTO> options = new ArrayList<OrderOptionDTO>();
+        private List<OrderOptionDTO> orderOptions;
 
-        public OrderProductDTO(List<OrderOption> options) {
-            this.productId = options.get(0).getProduct().getId();
-
-            // 활용2 -그대로 옮겨서 수집(람다표현식)
-            this.options = options.stream()
-                            .map(orderOption -> new OrderOptionDTO(orderOption))
-                            .toList();
+        public ProductDTO(int productId, List<OrderOption> orderOptions) {
+            this.productId = productId;
+            this.orderOptions = orderOptions.stream().map(option -> new OrderOptionDTO(option)).toList();
         }
 
         @Data
         class OrderOptionDTO {
-            private int id;
-            private String optionName;
-            private int qty;
-            private int totalPrice;
+            private int orderOptionId;
+            private String orderOptionName;
+            private int orderQty;
+            private int orderTotalPrice;
 
-            public OrderOptionDTO(OrderOption option) {
-                this.id = option.getId();
-                this.optionName = option.getOptionName();
-                this.qty = option.getQty();
-                this.totalPrice = option.getTotalPrice();
+            public OrderOptionDTO(OrderOption orderOption) {
+                this.orderOptionId = orderOption.getId();
+                this.orderOptionName = orderOption.getOptionName();
+                this.orderQty = orderOption.getQty();
+                this.orderTotalPrice = orderOption.getTotalPrice();
             }
         }
     }

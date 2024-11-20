@@ -5,13 +5,13 @@ import java.util.List;
 
 public class ReduceApp {
     public static void main(String[] args) {
-        // 1. reduce (조인)
+        // reduce (조인)
         List<Integer> nums = Arrays.asList(1, 2, 3, 4);
 
         int sum = nums.stream()
-                .mapToInt(x -> x) // int타입 리턴
+                .mapToInt(x -> x) // 모든 요소 int타입 리턴
                 .sum();
-        System.out.println(sum);
+        System.out.println("sum : " + sum);
 
         // reduce 전까지 map 등 추가 가능
         int sum2 = nums.stream()
