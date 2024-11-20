@@ -1,7 +1,7 @@
 package ex01.dto;
 
 import lombok.Data;
-import model.OrderOption;
+import ex01.model.OrderOption;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,11 +12,11 @@ public class OrderDetailV2DTO {
     private List<ProductDTO> products;
     private int sumPrice;
 
-    public OrderDetailV2DTO(List<OrderOption> options) {
+    public OrderDetailV2DTO(List<OrderOption> orderOptions) {
         // 1. orderId
-        this.orderId = options.get(0).getOrder().getId()
+        this.orderId = orderOptions.get(0).getOrder().getId();
         // 2. sumPrice - 활용
-        this.sumPrice = options.stream()
+        this.sumPrice = orderOptions.stream()
                 .mapToInt(value -> value.getTotalPrice())
                 .sum();
 
